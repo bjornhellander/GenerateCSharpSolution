@@ -12,7 +12,7 @@ namespace GenerateSolution
             var projectPath = Path.Combine(solutionPath, name);
             Directory.CreateDirectory(projectPath);
 
-            CreateSourceFile(projectPath, "File1.cs");
+            CreateClass(projectPath, "File1");
 
             CreateProjectFile(projectPath, name, id);
 
@@ -20,11 +20,18 @@ namespace GenerateSolution
             return new ProjectInfo(id, name, projectFilePath);
         }
 
-        private static void CreateSourceFile(string projectPath, string name)
+        private static void CreateClass(string projectPath, string name)
         {
-            var sourceFilePath = Path.Combine(projectPath, name);
+            var sourceFilePath = Path.Combine(projectPath, name+".cs");
             using (var stream = new StreamWriter(sourceFilePath))
             {
+                stream.WriteLine($@"
+namespace MyNamespace
+{{
+    public class {name}
+    {{
+    }}
+}}");
             }
         }
 

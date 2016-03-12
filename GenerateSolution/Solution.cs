@@ -7,8 +7,11 @@ namespace GenerateSolution
 {
     class Solution
     {
-        public static void Create(string solutionName, int numberOfProjects)
+        public static void Create()
         {
+            var solutionName = Configuration.SolutionName;
+            var numberOfProjects = Configuration.NumberOfProjects;
+
             var basePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..");
             var solutionPath = Path.Combine(basePath, solutionName);
             CreateSolutionFolder(solutionPath);

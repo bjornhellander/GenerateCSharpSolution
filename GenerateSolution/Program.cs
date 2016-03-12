@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenerateSolution
+﻿namespace GenerateSolution
 {
     class Program
     {
+        private const string solutionName = "TestSolution";
+        private const int numberOfProjects = 1;
+
         static void Main(string[] args)
         {
+            Solution.Create(solutionName, numberOfProjects);
         }
     }
 }

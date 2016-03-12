@@ -16,7 +16,7 @@ namespace GenerateSolution
 
             for (var i = 1; i <= numberOfClasses; i++)
             {
-                CreateClass(projectPath, "Class"+i);
+                CreateClass(projectPath, "Class"+i.ToString("D4"));
             }
 
             CreateProjectFile(projectPath, name, id, numberOfClasses);
@@ -66,7 +66,7 @@ namespace MyNamespace
                 stream.WriteLine($"  <ItemGroup>");
                 for (var i = 1; i <= numberOfClasses; i++)
                 {
-                    stream.WriteLine($"    <Compile Include=\"Class{i}.cs\" />");
+                    stream.WriteLine($"    <Compile Include=\"Class{i:D4}.cs\" />");
                 }
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");

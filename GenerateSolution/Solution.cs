@@ -35,7 +35,7 @@ namespace GenerateSolution
 
             for (var i = 1; i <= numberOfProjects; i++)
             {
-                var name = "Project" + i;
+                var name = "Project" + i.ToString("D4");
                 result.Add(Project.Create(solutionPath, name));
             }
 

@@ -39,7 +39,7 @@ namespace GenerateSolution
                 stream.WriteLine($"  <PropertyGroup>");
                 stream.WriteLine($"    <Configuration Condition=\" '$(Configuration)' == '' \">Debug</Configuration>");
                 stream.WriteLine($"    <Platform Condition=\" '$(Platform)' == '' \">AnyCPU</Platform>");
-                stream.WriteLine($"    <ProjectGuid>{{{id}}}</ProjectGuid>");
+                stream.WriteLine($"    <ProjectGuid>{{{id.ToString().ToLowerInvariant()}}}</ProjectGuid>");
                 stream.WriteLine($"    <OutputType>Library</OutputType>");
                 stream.WriteLine($"    <AppDesignerFolder>Properties</AppDesignerFolder>");
                 stream.WriteLine($"    <RootNamespace>{name}</RootNamespace>");

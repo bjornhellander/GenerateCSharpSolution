@@ -7,14 +7,19 @@ namespace GenerateSolution
     {
         public static ProjectInfo Create(string solutionPath, string name)
         {
+            var numberOfClasses = Configuration.NumberOfClasses;
+
             var id = Guid.NewGuid();
 
             var projectPath = Path.Combine(solutionPath, name);
             Directory.CreateDirectory(projectPath);
 
-            CreateClass(projectPath, "File1");
+            for (var i = 1; i <= numberOfClasses; i++)
+            {
+                CreateClass(projectPath, "Class"+i);
+            }
 
-            CreateProjectFile(projectPath, name, id);
+            CreateProjectFile(projectPath, name, id, numberOfClasses);
 
             var projectFilePath = Path.Combine(name, name + ".csproj");
             return new ProjectInfo(id, name, projectFilePath);
@@ -35,7 +40,7 @@ namespace MyNamespace
             }
         }
 
-        private static void CreateProjectFile(string projectPath, string name, Guid id)
+        private static void CreateProjectFile(string projectPath, string name, Guid id, int numberOfClasses)
         {
             var projectFilePath = Path.Combine(projectPath, name + ".csproj");
             using (var stream = new StreamWriter(projectFilePath))
@@ -59,7 +64,10 @@ namespace MyNamespace
                 stream.WriteLine($"    <Reference Include=\"System\" />");
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
-                stream.WriteLine($"    <Compile Include=\"File1.cs\" />");
+                for (var i = 1; i <= numberOfClasses; i++)
+                {
+                    stream.WriteLine($"    <Compile Include=\"Class{i}.cs\" />");
+                }
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");
                 stream.WriteLine($"    <DebugSymbols>true</DebugSymbols>");

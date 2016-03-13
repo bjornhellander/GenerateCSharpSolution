@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GenerateSolution
@@ -14,33 +15,19 @@ namespace GenerateSolution
             var projectPath = Path.Combine(solutionPath, name);
             Directory.CreateDirectory(projectPath);
 
+            var classes = new List<ClassInfo>();
             for (var i = 1; i <= numberOfClasses; i++)
             {
-                CreateClass(projectPath, "Class"+i.ToString("D4"));
+                classes.Add(Class.Create(projectPath, "Class"+i.ToString("D4")));
             }
 
-            CreateProjectFile(projectPath, name, id, numberOfClasses);
+            CreateProjectFile(projectPath, name, id, classes);
 
             var projectFilePath = Path.Combine(name, name + ".csproj");
             return new ProjectInfo(id, name, projectFilePath);
         }
 
-        private static void CreateClass(string projectPath, string name)
-        {
-            var sourceFilePath = Path.Combine(projectPath, name+".cs");
-            using (var stream = new StreamWriter(sourceFilePath))
-            {
-                stream.WriteLine($@"
-namespace MyNamespace
-{{
-    public class {name}
-    {{
-    }}
-}}");
-            }
-        }
-
-        private static void CreateProjectFile(string projectPath, string name, Guid id, int numberOfClasses)
+        private static void CreateProjectFile(string projectPath, string name, Guid id, IEnumerable<ClassInfo> classes)
         {
             var projectFilePath = Path.Combine(projectPath, name + ".csproj");
             using (var stream = new StreamWriter(projectFilePath))
@@ -64,9 +51,9 @@ namespace MyNamespace
                 stream.WriteLine($"    <Reference Include=\"System\" />");
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
-                for (var i = 1; i <= numberOfClasses; i++)
+                foreach (var @class in classes)
                 {
-                    stream.WriteLine($"    <Compile Include=\"Class{i:D4}.cs\" />");
+                    stream.WriteLine($"    <Compile Include=\"{@class.FileName}\" />");
                 }
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");

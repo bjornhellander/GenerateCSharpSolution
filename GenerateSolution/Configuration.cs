@@ -9,5 +9,7 @@
         public static int NumberOfClasses { get; set; } = 1;
 
         public static int NumberOfMethods { get; set; } = 1;
+
+        public static int NumberOfStatements { get; set; } = 1;
     }
 }

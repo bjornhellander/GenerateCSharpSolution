@@ -14,7 +14,18 @@ namespace GenerateSolution
 namespace MyNamespace
 {{
     public class {name}
-    {{
+    {{");
+
+                for (var i = 1; i <= Configuration.NumberOfMethods; i++)
+                {
+                    stream.WriteLine($@"
+        public void Func{i}()
+        {{
+        }}
+");
+                }
+
+                stream.WriteLine($@"
     }}
 }}");
             }

@@ -6,7 +6,7 @@ namespace GenerateSolution
 {
     class Project
     {
-        public static ProjectInfo Create(string solutionPath, string name)
+        public static ProjectInfo Create(string solutionPath, string name, IEnumerable<ProjectInfo> dependencies)
         {
             var numberOfClasses = Configuration.NumberOfClasses;
 
@@ -21,13 +21,13 @@ namespace GenerateSolution
                 classes.Add(Class.Create(projectPath, "Class"+i.ToString("D4")));
             }
 
-            CreateProjectFile(projectPath, name, id, classes);
+            CreateProjectFile(projectPath, name, id, classes, dependencies);
 
             var projectFilePath = Path.Combine(name, name + ".csproj");
             return new ProjectInfo(id, name, projectFilePath);
         }
 
-        private static void CreateProjectFile(string projectPath, string name, Guid id, IEnumerable<ClassInfo> classes)
+        private static void CreateProjectFile(string projectPath, string name, Guid id, IEnumerable<ClassInfo> classes, IEnumerable<ProjectInfo> dependencies)
         {
             var projectFilePath = Path.Combine(projectPath, name + ".csproj");
             using (var stream = new StreamWriter(projectFilePath))
@@ -54,6 +54,15 @@ namespace GenerateSolution
                 foreach (var @class in classes)
                 {
                     stream.WriteLine($"    <Compile Include=\"{@class.FileName}\" />");
+                }
+                stream.WriteLine($"  </ItemGroup>");
+                stream.WriteLine($"  <ItemGroup>");
+                foreach (var dependency in dependencies)
+                {
+                    stream.WriteLine($"    <ProjectReference Include=\"..\\{dependency.FileName}\">");
+                    stream.WriteLine($"      <Project>{{{dependency.LowerCaseId}}}</Project>");
+                    stream.WriteLine($"      <Name>{dependency.Name}</Name>");
+                    stream.WriteLine($"    </ProjectReference>");
                 }
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");

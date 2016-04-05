@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace GenerateSolution
@@ -36,7 +37,9 @@ namespace GenerateSolution
             for (var i = 1; i <= numberOfProjects; i++)
             {
                 var name = "Project" + i.ToString("D4");
-                result.Add(Project.Create(solutionPath, name, result));
+                var numberOfDependencies = Math.Min(result.Count, 20);
+                var dependencies = result.OrderBy(arg => Guid.NewGuid()).Take(numberOfDependencies);
+                result.Add(Project.Create(solutionPath, name, dependencies));
             }
 
             return result;

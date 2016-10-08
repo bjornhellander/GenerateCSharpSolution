@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace GenerateSolution
 {
-    class Solution
+    internal static class Solution
     {
         public static void Create()
         {
@@ -79,7 +79,7 @@ namespace GenerateSolution
         }
     }
 
-    class ProjectInfo
+    internal class ProjectInfo
     {
         private readonly Guid id;
 

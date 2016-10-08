@@ -1,8 +1,8 @@
 ﻿namespace GenerateSolution
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        internal static void Main()
         {
             Solution.Create();
         }

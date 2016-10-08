@@ -2,7 +2,7 @@
 
 namespace GenerateSolution
 {
-    class Class
+    internal static class Class
     {
         public static ClassInfo Create(string projectPath, string name)
         {
@@ -38,7 +38,7 @@ namespace GenerateSolution
         }
     }
 
-    class ClassInfo
+    internal class ClassInfo
     {
         public ClassInfo(string name, string fileName)
         {

@@ -1,6 +1,6 @@
 ﻿namespace GenerateSolution
 {
-    class Configuration
+    internal static class Configuration
     {
         public static string SolutionName { get; set; } = "TestSolution";
 

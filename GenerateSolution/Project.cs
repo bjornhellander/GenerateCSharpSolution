@@ -4,7 +4,7 @@ using System.IO;
 
 namespace GenerateSolution
 {
-    class Project
+    internal static class Project
     {
         public static ProjectInfo Create(string solutionPath, string name, IEnumerable<ProjectInfo> dependencies)
         {
@@ -18,7 +18,7 @@ namespace GenerateSolution
             var classes = new List<ClassInfo>();
             for (var i = 1; i <= numberOfClasses; i++)
             {
-                classes.Add(Class.Create(projectPath, "Class"+i.ToString("D4")));
+                classes.Add(Class.Create(projectPath, "Class" + i.ToString("D4")));
             }
 
             CreateProjectFile(projectPath, name, id, classes, dependencies);

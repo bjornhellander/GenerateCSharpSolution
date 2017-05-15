@@ -21,10 +21,24 @@
                 classes.Add(Class.Create(projectPath, "Class" + i.ToString("D4")));
             }
 
+            CreatePackagesConfigFile(projectPath);
+
             CreateProjectFile(projectPath, name, id, classes, dependencies);
 
             var projectFilePath = Path.Combine(name, name + ".csproj");
             return new ProjectInfo(id, name, projectFilePath);
+        }
+
+        private static void CreatePackagesConfigFile(string projectPath)
+        {
+            var projectFilePath = Path.Combine(projectPath, "packages.config");
+            using (var stream = new StreamWriter(projectFilePath))
+            {
+                stream.WriteLine($"<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                stream.WriteLine($"<packages>");
+                stream.WriteLine($"  <package id=\"StyleCop.Analyzers\" version=\"1.0.0\" targetFramework=\"net452\" developmentDependency=\"true\" />");
+                stream.WriteLine($"</packages>");
+            }
         }
 
         private static void CreateProjectFile(string projectPath, string name, Guid id, IEnumerable<ClassInfo> classes, IEnumerable<ProjectInfo> dependencies)
@@ -59,6 +73,9 @@
 
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
+                stream.WriteLine($"    <None Include=\"packages.config\" />");
+                stream.WriteLine($"  </ItemGroup>");
+                stream.WriteLine($"  <ItemGroup>");
 
                 foreach (var dependency in dependencies)
                 {
@@ -68,6 +85,11 @@
                     stream.WriteLine($"    </ProjectReference>");
                 }
 
+                stream.WriteLine($"  </ItemGroup>");
+                stream.WriteLine($"  <ItemGroup>");
+                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\Newtonsoft.Json.dll\" />");
+                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.CodeFixes.dll\" />");
+                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.dll\" />");
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");
                 stream.WriteLine($"    <DebugSymbols>true</DebugSymbols>");
@@ -80,6 +102,7 @@
                 stream.WriteLine($"    <ConsolePause>false</ConsolePause>");
                 stream.WriteLine($"    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>");
                 stream.WriteLine($"    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>");
+                stream.WriteLine($"    <NoWarn>SA1652</NoWarn>");
                 stream.WriteLine($"  </PropertyGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition=\" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' \">");
                 stream.WriteLine($"    <Optimize>true</Optimize>");
@@ -89,6 +112,7 @@
                 stream.WriteLine($"    <ConsolePause>false</ConsolePause>");
                 stream.WriteLine($"    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>");
                 stream.WriteLine($"    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>");
+                stream.WriteLine($"    <NoWarn>SA1652</NoWarn>");
                 stream.WriteLine($"  </PropertyGroup>");
                 stream.WriteLine($"  <Import Project=\"$(MSBuildToolsPath)\\Microsoft.CSharp.targets\" />");
                 stream.WriteLine($"</Project>");

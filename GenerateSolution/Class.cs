@@ -10,26 +10,25 @@
             var sourceFilePath = Path.Combine(projectPath, fileName);
             using (var stream = new StreamWriter(sourceFilePath))
             {
-                stream.WriteLine($"using System;");
+                stream.WriteLine($"// <copyright file=\"{name}.cs\" company=\"PlaceholderCompany\">");
+                stream.WriteLine($"// Copyright (c) PlaceholderCompany. All rights reserved.");
+                stream.WriteLine($"// </copyright>");
                 stream.WriteLine($"");
                 stream.WriteLine($"namespace MyNamespace");
                 stream.WriteLine($"{{");
+                stream.WriteLine($"    using System;");
+                stream.WriteLine($"");
                 stream.WriteLine($"    public class {name}");
                 stream.WriteLine($"    {{");
 
                 for (var i = 1; i <= Configuration.NumberOfMethods; i++)
                 {
-                    stream.WriteLine($"");
-                    stream.WriteLine($"        public void Func{i}()");
-                    stream.WriteLine($"        {{");
-
-                    for (var j = 0; j < Configuration.NumberOfStatements; j++)
+                    if (i > 1)
                     {
-                        stream.WriteLine($"            Console.WriteLine(DateTime.Now);");
+                        stream.WriteLine($"");
                     }
 
-                    stream.WriteLine($"        }}");
-                    stream.WriteLine($"");
+                    CreateMethod(stream, i);
                 }
 
                 stream.WriteLine($@"    }}");
@@ -37,6 +36,19 @@
             }
 
             return new ClassInfo(name, fileName);
+        }
+
+        private static void CreateMethod(StreamWriter stream, int i)
+        {
+            stream.WriteLine($"        public void Func{i}()");
+            stream.WriteLine($"        {{");
+
+            for (var j = 0; j < Configuration.NumberOfStatements; j++)
+            {
+                stream.WriteLine($"            Console.WriteLine(DateTime.Now);");
+            }
+
+            stream.WriteLine($"        }}");
         }
     }
 }

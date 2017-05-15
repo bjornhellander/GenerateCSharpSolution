@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace GenerateSolution
+﻿namespace GenerateSolution
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
     internal static class Project
     {
         public static ProjectInfo Create(string solutionPath, string name, IEnumerable<ProjectInfo> dependencies)
@@ -51,12 +51,15 @@ namespace GenerateSolution
                 stream.WriteLine($"    <Reference Include=\"System\" />");
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
+
                 foreach (var @class in classes)
                 {
                     stream.WriteLine($"    <Compile Include=\"{@class.FileName}\" />");
                 }
+
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
+
                 foreach (var dependency in dependencies)
                 {
                     stream.WriteLine($"    <ProjectReference Include=\"..\\{dependency.FileName}\">");
@@ -64,6 +67,7 @@ namespace GenerateSolution
                     stream.WriteLine($"      <Name>{dependency.Name}</Name>");
                     stream.WriteLine($"    </ProjectReference>");
                 }
+
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");
                 stream.WriteLine($"    <DebugSymbols>true</DebugSymbols>");

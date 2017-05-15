@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
-namespace GenerateSolution
+﻿namespace GenerateSolution
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
     internal static class Solution
     {
         public static void Create()
@@ -54,18 +54,21 @@ namespace GenerateSolution
                 stream.WriteLine($"# Visual Studio 14");
                 stream.WriteLine($"VisualStudioVersion = 14.0.24720.0");
                 stream.WriteLine($"MinimumVisualStudioVersion = 10.0.40219.1");
+
                 foreach (var project in projects)
                 {
                     var extraId = Guid.NewGuid().ToString().ToUpperInvariant();
                     stream.WriteLine($"Project(\"{{{extraId}}}\") = \"{project.Name}\", \"{project.FileName}\", \"{{{project.UpperCaseId}}}\"");
                     stream.WriteLine($"EndProject");
                 }
+
                 stream.WriteLine($"Global");
                 stream.WriteLine($"\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
                 stream.WriteLine($"\t\tDebug|Any CPU = Debug|Any CPU");
                 stream.WriteLine($"\t\tRelease|Any CPU = Release|Any CPU");
                 stream.WriteLine($"\tEndGlobalSection");
                 stream.WriteLine($"\tGlobalSection(ProjectConfigurationPlatforms) = postSolution");
+
                 foreach (var project in projects)
                 {
                     stream.WriteLine($"\t\t{{{project.UpperCaseId}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU");
@@ -73,35 +76,10 @@ namespace GenerateSolution
                     stream.WriteLine($"\t\t{{{project.UpperCaseId}}}.Release|Any CPU.ActiveCfg = Release|Any CPU");
                     stream.WriteLine($"\t\t{{{project.UpperCaseId}}}.Release|Any CPU.Build.0 = Release|Any CPU");
                 }
+
                 stream.WriteLine($"\tEndGlobalSection");
                 stream.WriteLine($"EndGlobal");
             }
         }
-    }
-
-    internal class ProjectInfo
-    {
-        private readonly Guid id;
-
-        public ProjectInfo(Guid id, string name, string fileName)
-        {
-            this.id = id;
-            Name = name;
-            FileName = fileName;
-        }
-
-        public string LowerCaseId
-        {
-            get { return id.ToString().ToLowerInvariant(); }
-        }
-
-        public string UpperCaseId
-        {
-            get { return id.ToString().ToUpperInvariant(); }
-        }
-
-        public string Name { get; private set; }
-
-        public string FileName { get; private set; }
     }
 }

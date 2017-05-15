@@ -1,7 +1,7 @@
-﻿using System.IO;
-
-namespace GenerateSolution
+﻿namespace GenerateSolution
 {
+    using System.IO;
+
     internal static class Class
     {
         public static ClassInfo Create(string projectPath, string name)
@@ -22,10 +22,12 @@ namespace GenerateSolution
                     stream.WriteLine($"");
                     stream.WriteLine($"        public void Func{i}()");
                     stream.WriteLine($"        {{");
+
                     for (var j = 0; j < Configuration.NumberOfStatements; j++)
                     {
                         stream.WriteLine($"            Console.WriteLine(DateTime.Now);");
                     }
+
                     stream.WriteLine($"        }}");
                     stream.WriteLine($"");
                 }
@@ -36,18 +38,5 @@ namespace GenerateSolution
 
             return new ClassInfo(name, fileName);
         }
-    }
-
-    internal class ClassInfo
-    {
-        public ClassInfo(string name, string fileName)
-        {
-            Name = name;
-            FileName = fileName;
-        }
-
-        public string Name { get; }
-
-        public string FileName { get; }
     }
 }

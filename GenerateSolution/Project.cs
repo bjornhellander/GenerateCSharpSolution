@@ -33,20 +33,23 @@
 
         private static void CreatePackagesConfigFile(string projectPath)
         {
-            var projectFilePath = Path.Combine(projectPath, "packages.config");
-            using (var stream = new StreamWriter(projectFilePath))
+            if (Configuration.UseAnalyzers)
             {
-                stream.WriteLine($"<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                stream.WriteLine($"<packages>");
-                stream.WriteLine($"  <package id=\"AsyncUsageAnalyzers\" version=\"1.0.0-alpha003\" targetFramework=\"net452\" developmentDependency=\"true\" />");
-                stream.WriteLine($"  <package id=\"Desktop.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
-                stream.WriteLine($"  <package id=\"Microsoft.AnalyzerPowerPack\" version=\"1.1.0\" targetFramework=\"net452\" /> ");
-                stream.WriteLine($"  <package id=\"Microsoft.CodeAnalysis.FxCopAnalyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
-                stream.WriteLine($"  <package id=\"StyleCop.Analyzers\" version=\"1.0.0\" targetFramework=\"net452\" developmentDependency=\"true\" />");
-                stream.WriteLine($"  <package id=\"System.Runtime.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
-                stream.WriteLine($"  <package id=\"System.Runtime.InteropServices.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
-                stream.WriteLine($"  <package id=\"System.Security.Cryptography.Hashing.Algorithms.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
-                stream.WriteLine($"</packages>");
+                var projectFilePath = Path.Combine(projectPath, "packages.config");
+                using (var stream = new StreamWriter(projectFilePath))
+                {
+                    stream.WriteLine($"<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    stream.WriteLine($"<packages>");
+                    stream.WriteLine($"  <package id=\"AsyncUsageAnalyzers\" version=\"1.0.0-alpha003\" targetFramework=\"net452\" developmentDependency=\"true\" />");
+                    stream.WriteLine($"  <package id=\"Desktop.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
+                    stream.WriteLine($"  <package id=\"Microsoft.AnalyzerPowerPack\" version=\"1.1.0\" targetFramework=\"net452\" /> ");
+                    stream.WriteLine($"  <package id=\"Microsoft.CodeAnalysis.FxCopAnalyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
+                    stream.WriteLine($"  <package id=\"StyleCop.Analyzers\" version=\"1.0.0\" targetFramework=\"net452\" developmentDependency=\"true\" />");
+                    stream.WriteLine($"  <package id=\"System.Runtime.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
+                    stream.WriteLine($"  <package id=\"System.Runtime.InteropServices.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
+                    stream.WriteLine($"  <package id=\"System.Security.Cryptography.Hashing.Algorithms.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
+                    stream.WriteLine($"</packages>");
+                }
             }
         }
 

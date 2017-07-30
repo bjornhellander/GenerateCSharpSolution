@@ -11,5 +11,7 @@
         public static int NumberOfMethods { get; set; }
 
         public static int NumberOfStatements { get; set; }
+
+        public static bool UseAnalyzers { get; set; }
     }
 }

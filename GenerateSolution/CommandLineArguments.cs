@@ -18,5 +18,8 @@
 
         [Option('s', "statements", DefaultValue = 30, HelpText = "The number of statements to generate.")]
         public int NumberOfStatements { get; set; }
+
+        [Option('a', "skip-analyzers", DefaultValue = false, HelpText = "Set to true if analyzers should not be added.")]
+        public bool SkipAnalyzers { get; set; }
     }
 }

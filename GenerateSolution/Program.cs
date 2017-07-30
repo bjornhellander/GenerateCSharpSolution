@@ -27,6 +27,7 @@
             Configuration.NumberOfClasses = options.NumberOfClasses;
             Configuration.NumberOfMethods = options.NumberOfMethods;
             Configuration.NumberOfStatements = options.NumberOfStatements;
+            Configuration.UseAnalyzers = !options.SkipAnalyzers;
         }
     }
 }

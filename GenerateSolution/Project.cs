@@ -23,6 +23,8 @@
 
             CreatePackagesConfigFile(projectPath);
 
+            CreateAssemblyInfoFile(projectPath);
+
             CreateProjectFile(projectPath, name, id, classes, dependencies);
 
             var projectFilePath = Path.Combine(name, name + ".csproj");
@@ -36,8 +38,33 @@
             {
                 stream.WriteLine($"<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 stream.WriteLine($"<packages>");
+                stream.WriteLine($"  <package id=\"AsyncUsageAnalyzers\" version=\"1.0.0-alpha003\" targetFramework=\"net452\" developmentDependency=\"true\" />");
+                stream.WriteLine($"  <package id=\"Desktop.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
+                stream.WriteLine($"  <package id=\"Microsoft.AnalyzerPowerPack\" version=\"1.1.0\" targetFramework=\"net452\" /> ");
+                stream.WriteLine($"  <package id=\"Microsoft.CodeAnalysis.FxCopAnalyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
                 stream.WriteLine($"  <package id=\"StyleCop.Analyzers\" version=\"1.0.0\" targetFramework=\"net452\" developmentDependency=\"true\" />");
+                stream.WriteLine($"  <package id=\"System.Runtime.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
+                stream.WriteLine($"  <package id=\"System.Runtime.InteropServices.Analyzers\" version=\"1.0.1\" targetFramework=\"net452\" />");
+                stream.WriteLine($"  <package id=\"System.Security.Cryptography.Hashing.Algorithms.Analyzers\" version=\"1.1.0\" targetFramework=\"net452\" />");
                 stream.WriteLine($"</packages>");
+            }
+        }
+
+        private static void CreateAssemblyInfoFile(string projectPath)
+        {
+            var path = Path.Combine(projectPath, "Properties");
+            Directory.CreateDirectory(path);
+
+            var projectFilePath = Path.Combine(path, "AssemblyInfo.cs");
+            using (var stream = new StreamWriter(projectFilePath))
+            {
+                stream.WriteLine($"// <copyright file=\"AssemblyInfo.cs\" company=\"PlaceholderCompany\">");
+                stream.WriteLine($"// Copyright (c) PlaceholderCompany. All rights reserved.");
+                stream.WriteLine($"// </copyright>");
+                stream.WriteLine($"");
+                stream.WriteLine($"using System.Reflection;");
+                stream.WriteLine($"");
+                stream.WriteLine($"[assembly: AssemblyVersion(\"1.0.0.0\")]");
             }
         }
 
@@ -66,6 +93,7 @@
                 stream.WriteLine($"  </ItemGroup>");
                 stream.WriteLine($"  <ItemGroup>");
 
+                stream.WriteLine($"    <Compile Include=\"Properties\\AssemblyInfo.cs\" />");
                 foreach (var @class in classes)
                 {
                     stream.WriteLine($"    <Compile Include=\"{@class.FileName}\" />");
@@ -86,11 +114,27 @@
                 }
 
                 stream.WriteLine($"  </ItemGroup>");
-                stream.WriteLine($"  <ItemGroup>");
-                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\Newtonsoft.Json.dll\" />");
-                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.CodeFixes.dll\" />");
-                stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.dll\" />");
-                stream.WriteLine($"  </ItemGroup>");
+
+                if (Configuration.UseAnalyzers)
+                {
+                    stream.WriteLine($"  <ItemGroup>");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\AsyncUsageAnalyzers.1.0.0-alpha003\\analyzers\\dotnet\\AsyncUsageAnalyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\Desktop.Analyzers.1.1.0\\analyzers\\dotnet\\cs\\Desktop.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\Desktop.Analyzers.1.1.0\\analyzers\\dotnet\\cs\\Desktop.CSharp.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\Microsoft.AnalyzerPowerPack.1.1.0\\analyzers\\dotnet\\cs\\Microsoft.AnalyzerPowerPack.Common.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\Microsoft.AnalyzerPowerPack.1.1.0\\analyzers\\dotnet\\cs\\Microsoft.AnalyzerPowerPack.CSharp.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\Newtonsoft.Json.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.CodeFixes.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\StyleCop.Analyzers.1.0.0\\analyzers\\dotnet\\cs\\StyleCop.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Runtime.Analyzers.1.0.1\\analyzers\\dotnet\\cs\\System.Runtime.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Runtime.Analyzers.1.0.1\\analyzers\\dotnet\\cs\\System.Runtime.CSharp.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Runtime.InteropServices.Analyzers.1.0.1\\analyzers\\dotnet\\cs\\System.Runtime.InteropServices.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Runtime.InteropServices.Analyzers.1.0.1\\analyzers\\dotnet\\cs\\System.Runtime.InteropServices.CSharp.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Security.Cryptography.Hashing.Algorithms.Analyzers.1.1.0\\analyzers\\dotnet\\cs\\System.Security.Cryptography.Hashing.Algorithms.Analyzers.dll\" />");
+                    stream.WriteLine($"    <Analyzer Include=\"..\\packages\\System.Security.Cryptography.Hashing.Algorithms.Analyzers.1.1.0\\analyzers\\dotnet\\cs\\System.Security.Cryptography.Hashing.Algorithms.CSharp.Analyzers.dll\" />");
+                    stream.WriteLine($"  </ItemGroup>");
+                }
+
                 stream.WriteLine($"  <PropertyGroup Condition= \" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \">");
                 stream.WriteLine($"    <DebugSymbols>true</DebugSymbols>");
                 stream.WriteLine($"    <DebugType>full</DebugType>");

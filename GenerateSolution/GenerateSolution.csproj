@@ -36,6 +36,9 @@
     <CodeAnalysisRuleSet>GenerateSolution.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Class.cs" />
     <Compile Include="ClassInfo.cs" />
+    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectInfo.cs" />
@@ -58,7 +62,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="GenerateSolution.ruleset" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

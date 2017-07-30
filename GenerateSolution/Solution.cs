@@ -37,6 +37,7 @@
             for (var i = 1; i <= numberOfProjects; i++)
             {
                 var name = "Project" + i.ToString("D4");
+                Console.WriteLine(name);
                 var numberOfDependencies = Math.Min(result.Count, 20);
                 var dependencies = result.OrderBy(arg => Guid.NewGuid()).Take(numberOfDependencies);
                 result.Add(Project.Create(solutionPath, name, dependencies));
